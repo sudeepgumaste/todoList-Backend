@@ -81,7 +81,7 @@ export const verifyUser = async (req, res) => {
     const savedUser = await user.save();
     res.json({ _id: savedUser._id });
   } catch (error) {
-    return res.status(500).json(error);
+    return res.sendStatus(500);
   }
 };
 
