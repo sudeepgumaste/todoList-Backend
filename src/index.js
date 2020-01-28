@@ -3,12 +3,18 @@ import dotenv from "dotenv";
 import process from "process";
 import { router } from "./router";
 import mongoose from "mongoose";
+import cors from 'cors';
 
 //configuring environment
 dotenv.config();
 
 //create express app
 const app = express();
+
+//middlewares
+app.use(cors);
+app.use(express.json());
+app.use(router);
 
 //db connection
 mongoose.connect(
@@ -22,10 +28,6 @@ mongoose.connect(
     console.log("Connected to DB");
   },
 );
-
-//middlewares
-app.use(express.json());
-app.use(router);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
