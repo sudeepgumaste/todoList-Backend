@@ -36,7 +36,7 @@ export const deleteTodo = async (req, res) => {
 }
 
 export const updateTodo = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try{
     const updatedTodo = await Todos.updateOne(
       {_id : req.params.id},
