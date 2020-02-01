@@ -7,7 +7,7 @@ import jwt, { verify } from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { RefreshToken } from "../../models/refreshtoken.model";
 
-import {sendMail} from '../../utils/mail/sendMail';
+import { sendMail } from "../../utils/mail/sendMail";
 
 //registration route
 export const register = async (req, res) => {
@@ -27,7 +27,7 @@ export const register = async (req, res) => {
       return res.status(400).json({ msg: "Email already exists" });
     }
   } catch (err) {
-    return res.sendStatus(500)
+    return res.sendStatus(500);
   }
 
   //hash passwords
@@ -48,39 +48,43 @@ export const register = async (req, res) => {
   );
 
   //mail the token to user
-  sendMail(req.body.email,'Verify your account', `<a href="http://127.0.0.1:3000/api/auth/verify/${verifyToken}">Verify</a>`)
-  
-  res.json({msg : 'Verification link has been sent to your email'})
+  sendMail(
+    req.body.email,
+    "Verify your account",
+    `<a href="${process.env.SERVER_ROUTE}/api/auth/verify/${verifyToken}">Verify</a>`
+  );
+
+  res.json({ msg: "Verification link has been sent to your email" });
 };
 
 //verification route
 export const verifyUser = async (req, res) => {
-  const token = req.params.token
-  if(!token){
-    return res.sendStatus(400)
+  const token = req.params.token;
+  if (!token) {
+    return res.sendStatus(400);
   }
-  let verify = undefined
-  try{
-    verify = jwt.verify(token,process.env.VERIFY_TOKEN_SECRET)
-  }catch(err){
-    return res.sendStatus(403)
+  let verify = undefined;
+  try {
+    verify = jwt.verify(token, process.env.VERIFY_TOKEN_SECRET);
+  } catch (err) {
+    return res.sendStatus(403);
   }
 
-  try{
-    const emailVerified = await User.findOne({email: verify.email})
-    if(emailVerified){
-      return res.status(400).json({msg: 'Email already verified'})
+  try {
+    const emailVerified = await User.findOne({ email: verify.email });
+    if (emailVerified) {
+      return res.status(400).json({ msg: "Email already verified" });
     }
-  }catch(err){
+  } catch (err) {
     console.log(err);
-    return res.sendStatus(500)
+    return res.sendStatus(500);
   }
 
   const user = new User(verify);
 
   try {
     const savedUser = await user.save();
-    res.json({ _id: savedUser._id });
+    res.send("<h2>Account verified</h2>");
   } catch (error) {
     return res.sendStatus(500);
   }

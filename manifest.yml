@@ -1,5 +1,0 @@
----
-applications:
- - name: TodosBackend
-   random-route: true
-   memory: 256M
