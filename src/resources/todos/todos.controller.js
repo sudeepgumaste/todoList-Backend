@@ -50,3 +50,18 @@ export const updateTodo = async (req, res) => {
     console.log(error);
   }
 }
+
+export const addSubTask = async (req, res) => {
+  try{
+    const updatedTodo = await Todos.updateOne(
+      {_id : req.params.id},
+      {
+        $push:{ subTasks : req.body }
+      }
+    );
+    res.json(updatedTodo);
+  }catch(error){
+    res.sendStatus(500);
+    console.log(error);
+  }
+}

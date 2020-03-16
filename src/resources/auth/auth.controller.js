@@ -129,7 +129,7 @@ export const login = async (req, res) => {
   );
 
   try {
-    await RefreshToken.findOneAndUpdate(
+    await RefreshToken.updateOne(
       { userId: user._id },
       { token: refreshToken },
       { upsert: true }
