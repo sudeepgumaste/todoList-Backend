@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { postTodo, getTodos, deleteTodo, updateTodo } from "./todos.controller";
+import { postTodo, getTodos, deleteTodo, updateTodo, addSubTask } from "./todos.controller";
 
 import { verifyToken } from "../auth/auth.middleware";
 
@@ -9,3 +9,4 @@ todosRouter.get("/", verifyToken, getTodos);
 todosRouter.post("/", verifyToken, postTodo);
 todosRouter.delete("/:id", verifyToken, deleteTodo);
 todosRouter.put("/:id", verifyToken, updateTodo);
+todosRouter.put("/:id/subtask", verifyToken, addSubTask);
