@@ -65,3 +65,24 @@ export const addSubTask = async (req, res) => {
     console.log(error);
   }
 }
+
+export const markSubTaskComplete = async (req, res) =>{
+  // console.log(req.params);
+  try{
+    const updatedTodo = await Todos.updateOne(
+      {_id : req.params.id},
+      {
+        $set:{ "subTasks.$[element].completed" : true }
+      },
+      {
+        arrayFilters : [ 
+          {"element._id" : req.params.subid }
+        ]
+      }
+    );
+    res.json(updatedTodo);
+  }catch(error){
+    res.sendStatus(500);
+    console.log(error);
+  }
+}
